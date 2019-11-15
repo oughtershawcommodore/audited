@@ -16,6 +16,12 @@ describe Audited::Auditor do
         expect(Models::ActiveRecord::User.non_audited_columns).to include(column)
       end
     end
+    
+    context "single-table inheritance record" do
+      it "should audit type to retrieve object revisions without loosing inheritance information" do
+        expect(Models::ActiveRecord::Company::STICompany.non_audited_columns).not_to include('type')
+      end
+    end
 
     context "should be configurable which conditions are audited" do
       subject { ConditionalCompany.new.send(:auditing_enabled) }
